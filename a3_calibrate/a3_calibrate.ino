@@ -1,12 +1,23 @@
 //-- myOTTO calibration
-#include <Servo.h>
 
+// 參數：校正的位置 (要調整的角度)
+int adj[]={ 0, 0, 0, 0 };
+
+// 參數：起始位置
+int pos[]={ 90,90,90,90 };  // 起始位置
+
+
+// 參數：各伺服馬達的腳位
+#define PIN_RR 5
+#define PIN_RL 4
+#define PIN_YR 3
+#define PIN_YL 2
+
+#include <Servo.h>
 Servo S0, S1, S2, S3;
 
-int pos[]={ 90,90,90,90 };  // 正中央的位置
-int adj[]={ 0,0,0,0 };  // 要調整的角度 (此程式不可更改此值)
 
-void help(void)
+void help()
 {
   Serial.println("This is used to calibration the servos for 'Otto'");
   Serial.println("The interface uses single character controls");
@@ -22,6 +33,7 @@ void help(void)
   Serial.println("");
 }
 
+
 void show_message()
 { 
   Serial.print("Adjust: "); 
@@ -35,8 +47,8 @@ void show_message()
   Serial.println("");
 }
 
-// process the user input char
 
+// 處理輸入的字元
 void processChar(char c)
 {
   // see if the first char is a number or a command char
@@ -99,39 +111,35 @@ void processChar(char c)
   show_message();
 }
 
+
 void move_servo()
 {
-    S0.write(pos[0]+adj[0]);
-    S1.write(pos[1]+adj[1]);
-    S2.write(pos[2]+adj[2]);
-    S3.write(pos[3]+adj[3]);
+  S0.write(pos[0]+adj[0]);
+  S1.write(pos[1]+adj[1]);
+  S2.write(pos[2]+adj[2]);
+  S3.write(pos[3]+adj[3]);
 }
 
-// init all things
 
-void setup(void)
+void setup()
 {
-  // Init Serial port
   Serial.begin(9600);
  
-  S0.attach(5);
-  S1.attach(4);
-  S2.attach(3);
-  S3.attach(2);
+  S0.attach(PIN_RR);
+  S1.attach(PIN_RL);
+  S2.attach(PIN_YR);
+  S3.attach(PIN_YL);
   
   help();
 }
 
-// see if the user wants anything
 
-void loop()  // test comparing before & after function
+void loop()
 {
-  // get input from Serial port
+  // 取得序列埠傳入的資料
   while(Serial.available() > 0)
   {
     processChar(Serial.read());
   }
   move_servo();
-  
- // delay(4000);
 }
