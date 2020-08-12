@@ -78,11 +78,18 @@ void processChar(char c)
        break;
        
     case '7':
-       tempo_servo(t*1, new6);
+       tempo_servo(t*2, new6);
+       tempo_servo(t*2, new0);
        break;
        
     case '8':
+       tempo_servo(t*1, new6);
+       tempo_servo(t*1, new0);
+       break;
+       
+    case '9':
        tempo_servo(t*4, new6);
+       tempo_servo(t*4, new0);
        break;
        
     case '\n':
