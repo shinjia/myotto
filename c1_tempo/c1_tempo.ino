@@ -8,8 +8,8 @@ int adj[]={ 0, 0, 0, 0 };
 // 參數：起始位置
 int pos[]={ 90,90,90,90 };  // 起始位置
 
-// TEMPO: 121 BPM
-int tempo_base = 120;
+// TEMPO: 120 BPM ==> 0.5sec/beat
+int beat_time = 500;
 
 #define INTERVALTIME 10.0 
 
@@ -24,8 +24,7 @@ Servo S0, S1, S2, S3;
 #define PIN_YL 2
 
 
-void move_servo()
-{
+void move_servo() {
   S0.write(pos[0]+adj[0]);
   S1.write(pos[1]+adj[1]);
   S2.write(pos[2]+adj[2]);
@@ -33,8 +32,7 @@ void move_servo()
 }
 
 
-void tempo_servo(int stime, int pos_new[])
-{
+void tempo_servo(int stime, int pos_new[]) {
   float increment[N_SERVOS];
   unsigned long final_time;
   unsigned long interval_time;
@@ -42,8 +40,7 @@ void tempo_servo(int stime, int pos_new[])
   int oneTime;
   int pos_old[] = { 0, 0, 0, 0 };
 
-  for(int i=0; i<N_SERVOS; i++)
-  {
+  for(int i=0; i<N_SERVOS; i++) {
     pos_old[i] = pos[i];
     increment[i] = ((pos_new[i])-pos[i])/(stime/INTERVALTIME);
   }
@@ -51,17 +48,13 @@ void tempo_servo(int stime, int pos_new[])
   final_time =  millis() + stime; 
   
   iteration = 1; 
-  while(millis() < final_time)
-  {
+  while(millis() < final_time) {
       interval_time = millis()+INTERVALTIME;  
       
       oneTime=0;      
-      while(millis()<interval_time)
-      {    
-          if(oneTime<1)
-          { 
-              for(int i=0;i<N_SERVOS;i++)
-              {
+      while(millis()<interval_time) {
+          if(oneTime<1) {
+              for(int i=0;i<N_SERVOS;i++) {
                   pos[i] = pos_old[i] + (iteration * increment[i]);
               }
               move_servo();
@@ -71,15 +64,13 @@ void tempo_servo(int stime, int pos_new[])
       }     
   }   
 
-  for(int i=0;i<N_SERVOS;i++)
-  {
+  for(int i=0;i<N_SERVOS;i++) {
     pos[i] = pos_new[i];
   }
 }
 
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(115200);
  
   S0.attach(PIN_RR);
@@ -91,26 +82,25 @@ void setup(void)
 }
 
 
-void loop()
-{
+void loop() {
   int move0[] = { 90, 90, 90, 90 };
   int move1[] = { 60, 90, 90, 90 };
   int move2[] = { 120, 90, 90, 90 };
 
-  float t = tempo_base;
+  float t = beat_time;
   
-  tempo_servo(t*2, move2);
-  tempo_servo(t*2, move0);
-  tempo_servo(t*2, move2);
-  tempo_servo(t*2, move0);
+  tempo_servo(t, move2);
+  tempo_servo(t, move0);
+  tempo_servo(t, move2);
+  tempo_servo(t, move0);
   
-  tempo_servo(t*2, move2);
-  tempo_servo(t*2, move0);
-  tempo_servo(t*2, move2);
-  tempo_servo(t*2, move0);
+  tempo_servo(t, move2);
+  tempo_servo(t, move0);
+  tempo_servo(t, move2);
+  tempo_servo(t, move0);
   
-  tempo_servo(t*4, move1);
-  tempo_servo(t*4, move0);
-  tempo_servo(t*4, move1);
-  tempo_servo(t*4, move0); 
+  tempo_servo(t*2, move1);
+  tempo_servo(t*2, move0);
+  tempo_servo(t*2, move1);
+  tempo_servo(t*2, move0); 
 }

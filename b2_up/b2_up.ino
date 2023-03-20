@@ -22,7 +22,7 @@ int shift4[][4] = {
 };
 
 int shift_length; // 直接在程式中計算取得
-int shift_delay = 121;
+int shift_delay = 120;
 
 
 #include <Servo.h>
@@ -35,8 +35,7 @@ Servo S0, S1, S2, S3;
 #define PIN_YL 2
 
 
-void move_servo()
-{
+void move_servo() {
   S0.write(pos[0]+adj[0]);
   S1.write(pos[1]+adj[1]);
   S2.write(pos[2]+adj[2]);
@@ -44,8 +43,7 @@ void move_servo()
 }
 
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
  
   S0.attach(PIN_RR);
@@ -58,12 +56,10 @@ void setup()
 }
 
 
-void loop()
-{
+void loop() {
   shift_length = sizeof(shift4) / sizeof(shift4[0]);
   
-  for(int j=0; j<shift_length; j++)
-  {
+  for(int j=0; j<shift_length; j++) {
     pos[0] = shift4[j][0];
     pos[1] = shift4[j][1];
     pos[2] = shift4[j][2];
@@ -76,8 +72,7 @@ void loop()
 }
 
 
-void show_message()
-{
+void show_message() {
   Serial.println("HOME Position");
   
   Serial.print("Position: ");  

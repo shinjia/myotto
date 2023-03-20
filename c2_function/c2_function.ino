@@ -8,8 +8,8 @@ int adj[]={ 0, 0, 0, 0 };
 // 參數：起始位置
 int pos[]={ 90,90,90,90 };  // 起始位置
 
-// TEMPO: 121 BPM
-int tempo_base = 120;
+// TEMPO: 120 BPM
+int beat_time = 500;
 
 #define INTERVALTIME 10.0 
 
@@ -23,8 +23,7 @@ int tempo_base = 120;
 Servo S0, S1, S2, S3;
 
 
-void help(void)
-{
+void help(void) {
   Serial.println("This is used to calibration the servos for 'Otto'");
   Serial.println("The interface uses single character controls");
   Serial.println("");
@@ -35,8 +34,7 @@ void help(void)
 
 
 // 處理輸入的字元
-void processChar(char c)
-{
+void processChar(char c) {
   int s = sizeof(pos);
   int new0[] = {90, 90, 90, 90};
   int new1[] = {50, 90, 90, 90};
@@ -46,9 +44,8 @@ void processChar(char c)
   int new5[] = {50, 140, 90, 90};
   int new6[] = {140, 50, 90, 90};
 
-  int t = tempo_base;
-  switch(c)
-  {
+  int t = beat_time;
+  switch(c) {
     case '0':
        tempo_servo(t*2, new0);
        break;
@@ -105,8 +102,7 @@ void processChar(char c)
 }
 
 
-void move_servo()
-{
+void move_servo() {
   S0.write(pos[0]+adj[0]);
   S1.write(pos[1]+adj[1]);
   S2.write(pos[2]+adj[2]);
@@ -114,8 +110,7 @@ void move_servo()
 }
 
 
-void tempo_servo(int stime, int pos_new[])
-{
+void tempo_servo(int stime, int pos_new[]) {
   float increment[N_SERVOS];
   unsigned long final_time;
   unsigned long interval_time;
@@ -123,8 +118,7 @@ void tempo_servo(int stime, int pos_new[])
   int oneTime;
   int pos_old[] = { 0, 0, 0, 0 };
 
-  for(int i=0; i<N_SERVOS; i++)
-  {
+  for(int i=0; i<N_SERVOS; i++) {
     pos_old[i] = pos[i];
     increment[i] = ((pos_new[i])-pos[i])/(stime/INTERVALTIME);
   }
@@ -132,17 +126,13 @@ void tempo_servo(int stime, int pos_new[])
   final_time =  millis() + stime; 
   
   iteration = 1; 
-  while(millis() < final_time)
-  {
+  while(millis() < final_time) {
       interval_time = millis()+INTERVALTIME;  
       
       oneTime=0;      
-      while(millis()<interval_time)
-      {    
-          if(oneTime<1)
-          { 
-              for(int i=0;i<N_SERVOS;i++)
-              {
+      while(millis()<interval_time) {    
+          if(oneTime<1) { 
+              for(int i=0;i<N_SERVOS;i++) {
                   pos[i] = pos_old[i] + (iteration * increment[i]);
               }
               move_servo();
@@ -152,15 +142,13 @@ void tempo_servo(int stime, int pos_new[])
       }     
   }   
 
-  for(int i=0;i<N_SERVOS;i++)
-  {
+  for(int i=0;i<N_SERVOS;i++) {
     pos[i] = pos_new[i];
   }
 }
 
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(115200);
  
   S0.attach(PIN_RR);
@@ -172,11 +160,9 @@ void setup(void)
 }
 
 
-void loop()
-{
+void loop() {
   // 取得序列埠傳入的資料
-  while(Serial.available() > 0)
-  {
+  while(Serial.available() > 0) {
     processChar(Serial.read());
   }
   move_servo();

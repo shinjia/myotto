@@ -17,8 +17,7 @@ int pos[]={ 90,90,90,90 };  // 起始位置
 Servo S0, S1, S2, S3;
 
 
-void move_servo()
-{
+void move_servo() {
   S0.write(pos[0]+adj[0]);
   S1.write(pos[1]+adj[1]);
   S2.write(pos[2]+adj[2]);
@@ -26,9 +25,8 @@ void move_servo()
 }
 
 
-void setup()
-{
-  Serial.begin(9600);
+void setup() {
+  Serial.begin(115200);
  
   S0.attach(PIN_RR);
   S1.attach(PIN_RL);
@@ -40,30 +38,26 @@ void setup()
 }
 
 
-void loop()
-{
+void loop() {
   // 此處僅改變一個馬達 S0
   int shift = 10;  // 偏移的量
   
   // 愈來愈大
-  for(int angle=90; angle<90+shift; angle++)
-  {
+  for(int angle=90; angle<90+shift; angle++) {
     pos[0] = angle;  // 指定移的角度
     move_servo();
     delay(50);
   }
   
   // 愈來愈小
-  for(int angle=90+shift; angle>90-shift; angle--)
-  {
+  for(int angle=90+shift; angle>90-shift; angle--) {
     pos[0] = angle;  // 指定移的角度
     move_servo();
     delay(50);
   }
   
   // 愈來愈大，回到定位
-  for(int angle=90-shift; angle<90; angle++)
-  {
+  for(int angle=90-shift; angle<90; angle++) {
     pos[0] = angle;  // 指定移的角度
     move_servo();
     delay(50);

@@ -123,7 +123,7 @@ void move_servo()
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
  
   S0.attach(PIN_RR);
   S1.attach(PIN_RL);

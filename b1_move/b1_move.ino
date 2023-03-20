@@ -27,8 +27,7 @@ Servo S0, S1, S2, S3;
 #define PIN_YL 2
 
 
-void move_servo()
-{
+void move_servo() {
   S0.write(pos[0]+adj[0]);
   S1.write(pos[1]+adj[1]);
   S2.write(pos[2]+adj[2]);
@@ -36,9 +35,8 @@ void move_servo()
 }
 
 
-void setup()
-{
-  Serial.begin(9600);
+void setup() {
+  Serial.begin(115200);
  
   S0.attach(PIN_RR);
   S1.attach(PIN_RL);
@@ -52,13 +50,10 @@ void setup()
 }
 
 
-void loop()
-{
-  for(int i=0; i<4; i++)
-  {
+void loop() {
+  for(int i=0; i<4; i++) {
     int shift_length = sizeof(shift) / sizeof(int);
-    for(int j=0; j<shift_length; j++)
-    {
+    for(int j=0; j<shift_length; j++) {
        pos[i] = 90 + shift[j]*shift_scale;
        move_servo();
        show_message();
@@ -68,8 +63,7 @@ void loop()
 }
 
 
-void show_message()
-{ 
+void show_message() { 
   Serial.print("Posistion: ");  
   Serial.print(pos[0]);
   Serial.print(",");

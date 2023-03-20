@@ -1,4 +1,4 @@
-//-- myOTTO calibration
+//-- myOTTO dance
 
 int N_SERVOS = 4; // 伺服馬達的個數
 
@@ -9,7 +9,7 @@ int adj[]={ 0, 0, 0, 0 };
 int pos[]={ 90,90,90,90 };  // 起始位置
 
 // TEMPO: BPM
-int beat_time = 500;
+int tempo_base = 120;
 
 #define INTERVALTIME 10.0 
 
@@ -37,9 +37,9 @@ void help(void) {
 void processChar(char c) {
   int s = sizeof(pos);
   int new0[] = {90, 90, 90, 90};
-  int new1[] = {50, 90, 90, 90};
+  int new1[] = {130, 90, 90, 90};
   int new2[] = {90, 50, 90, 90};
-  int new3[] = {130, 130, 90, 90};
+  int new3[] = {50, 130, 90, 90};
   int new4[] = {50, 50, 90, 90};
   int new5[] = {50, 140, 90, 90};
   int new6[] = {140, 50, 90, 90};
@@ -49,14 +49,35 @@ void processChar(char c) {
   int v1, v2, v3, v4, vt;
   int u1, u2, u3, u4, ut;
 
-  int t = beat_time;
+  int t = tempo_base;
   switch(c) {
     case '0':
-       tempo_servo(t, new0);
+       tempo_servo(t*2, new0);
+       break;
+       
+    case '1':
+       for(int i=0; i<4; i++) {
+         tempo_servo(t*4, new1);
+         tempo_servo(t*4, new0);
+       }
+       break;
+       
+    case '2':
+       for(int i=0; i<4; i++) {
+         tempo_servo(t*4, new2);
+         tempo_servo(t*4, new0);
+       }
+       break;
+       
+    case '3':
+       for(int i=0; i<4; i++) {
+         tempo_servo(t*4, new3);
+         tempo_servo(t*4, new0);
+       }
        break;
        
     case 'a':
-       for(int i=0; i<20; i++) {
+       for(int i=0; i<8; i++) {
          v1 = random(90-50, 90+50);
          v2 = random(90-50, 90+50);
          v3 = random(90-20, 90+20);
@@ -66,37 +87,36 @@ void processChar(char c) {
          pos_now[1] = v2;
          pos_now[2] = v3;
          pos_now[3] = v4;
-         tempo_servo(t, pos_now);
+         tempo_servo(t*2, pos_now);
        }
-       tempo_servo(t, new0);
+       tempo_servo(t*2, new0);
        break;
        
     case 'b':
-       for(int i=0; i<5; i++) {
+       for(int i=0; i<8; i++) {
          v1 = random(90-50, 90+50);
          v2 = random(90-50, 90+50);
          v3 = random(90-20, 90+20);
          v4 = random(90-20, 90+20);
          vt = random(1, 4);
-         for(int j=0; j<4; j++)
-         {
+         for(int j=0; j<4; j++) {
            pos_now[0] = v1;
            pos_now[1] = v2;
            pos_now[2] = v3;
            pos_now[3] = v4;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
            pos_now[0] = 90;
            pos_now[1] = 90;
            pos_now[2] = 90;
            pos_now[3] = 90;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
          }
        }
-       tempo_servo(t, new0);
+       tempo_servo(t*2, new0);
        break;
        
     case 'c':
-       for(int i=0; i<5; i++) {
+       for(int i=0; i<8; i++) {
          v1 = random(-50, +50);
          v2 = random(-50, +50);
          v3 = random(-20, +20);
@@ -107,31 +127,31 @@ void processChar(char c) {
            pos_now[1] = 90+v2;
            pos_now[2] = 90+v3;
            pos_now[3] = 90+v4;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
            pos_now[0] = 90;
            pos_now[1] = 90;
            pos_now[2] = 90;
            pos_now[3] = 90;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
          }
          for(int j=0; j<2; j++) {
            pos_now[0] = 90-v2;
            pos_now[1] = 90-v1;
            pos_now[2] = 90-v4;
            pos_now[3] = 90-v3;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
            pos_now[0] = 90;
            pos_now[1] = 90;
            pos_now[2] = 90;
            pos_now[3] = 90;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
          }
        }
-       tempo_servo(t, new0);
+       tempo_servo(t*2, new0);
        break;
        
     case 'd':
-       for(int i=0; i<5; i++) {
+       for(int i=0; i<8; i++) {
          u1 = random(-50, +50);
          u2 = random(-50, +50);
          u3 = random(-20, +20);
@@ -146,15 +166,15 @@ void processChar(char c) {
            pos_now[1] = 90+u2;
            pos_now[2] = 90+u3;
            pos_now[3] = 90+u4;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
            pos_now[0] = 90+v1;
            pos_now[1] = 90+v2;
            pos_now[2] = 90+v3;
            pos_now[3] = 90+v4;
-           tempo_servo(t, pos_now);
+           tempo_servo(t*2, pos_now);
          }
        }
-       tempo_servo(t, new0);
+       tempo_servo(t*2, new0);
        break;
        
     case '\n':
@@ -199,7 +219,7 @@ void tempo_servo(int stime, int pos_new[]) {
       
       oneTime=0;      
       while(millis()<interval_time) {
-          if(oneTime<1) {
+          if(oneTime<1) { 
               for(int i=0;i<N_SERVOS;i++) {
                   pos[i] = pos_old[i] + (iteration * increment[i]);
               }
@@ -233,5 +253,31 @@ void loop() {
   while(Serial.available() > 0) {
     processChar(Serial.read());
   }
-  move_servo();
+  
+  processChar('0'); move_servo();
+  
+  processChar('1'); move_servo();
+  processChar('2'); move_servo();
+  processChar('3'); move_servo();
+  
+  for(int i=0; i<4; i++) {
+    processChar('0'); move_servo();
+  }
+  
+  processChar('b'); move_servo();
+  processChar('c'); move_servo();
+  processChar('d'); move_servo();
+
+  for(int i=0; i<16; i++) {
+    processChar('0'); move_servo();
+  }
+ /*
+  processChar('a'); move_servo();
+  processChar('0'); move_servo();
+  processChar('b'); move_servo();
+  processChar('0'); move_servo();
+  processChar('c'); move_servo();
+  processChar('0'); move_servo();
+  processChar('d'); move_servo();
+  */
 }
